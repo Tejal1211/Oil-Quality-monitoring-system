@@ -12,6 +12,7 @@ class SerialReader:
         self.last = None                 # last reading dict
         self.ser = None
         self.prev = None
+        self.demo_temperature = 45.0
         self.last_insert = 0.0
         self.last_rx = time.time()
         self.malformed = 0
@@ -87,8 +88,10 @@ class SerialReader:
             self.malformed += 1
 
     def demo_tick(self, cfg):
-        t = 45 + 8 * math.sin(time.time() / 60) + random.uniform(-0.4, 0.4)
-        self.record(round(t, 2), "demo", cfg)
+        target = 45 + 5 * math.sin(time.time() / 30)
+        self.demo_temperature += (target - self.demo_temperature) * 0.15 + random.uniform(-0.8, 0.8)
+        self.demo_temperature = max(35, min(55, self.demo_temperature))
+        self.record(round(self.demo_temperature, 2), "demo", cfg)
 
     def record(self, t, source, cfg):
         self.last_rx = time.time()

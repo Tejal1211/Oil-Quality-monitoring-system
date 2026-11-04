@@ -36,7 +36,7 @@ export default function TempPanel({ big = false }) {
         <div>
           <div className="lbl">Current temperature</div>
           <div className={`font-bold ${big ? "text-5xl" : "text-4xl"}`}>{last ? c(last.temperature_c) : "—"}<span className="text-xl ml-1">{u}</span></div>
-          <div className="text-xs text-slate-500 mt-1">Latest: {fmtTime(last?.ts)} {last && <Badge color={last.source === "demo" ? "amber" : "green"}>{last.source === "demo" ? "Simulated demo data" : "Hardware data"}</Badge>}</div>
+          <div className="text-xs text-slate-500 mt-1">Latest: {fmtTime(last?.ts)} {last && <Badge color={last.source === "demo" ? "amber" : "green"}>{last.source === "demo" ? "Simulated reading" : "Hardware data"}</Badge>}</div>
         </div>
         <div className="flex gap-1 flex-wrap">
           {RANGES.map(([l, v]) => <button key={v} onClick={() => setH(v)} className={h === v ? "btn" : "btn2"}>{l}</button>)}
