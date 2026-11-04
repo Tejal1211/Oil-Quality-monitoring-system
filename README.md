@@ -37,7 +37,7 @@ npm run dev
 Open http://localhost:5173. Shortcuts: `start_backend.bat`, `start_frontend.bat`.
 
 ## Demo Mode → real data
-- Default `Auto`: if the serial port cannot be opened the backend starts in **Demo Mode** with simulated readings (stored with `source='demo'`, labelled "Simulated" everywhere, never mixed into hardware history unless you choose "All").
+- Default `Auto`: if the serial port cannot be opened, or no valid sensor readings arrive before the configured timeout, the backend starts in **Demo Mode** with fluctuating simulated readings (stored with `source='demo'`, labelled "Simulated", and kept separate from hardware history unless you choose "All"). When valid sensor readings resume, the backend switches back to hardware readings.
 - To use hardware: find the COM port (Device Manager → Ports), then in **Device Management** (or Settings) set the port, baud 9600 and press *Save & reconnect*. Header turns **Connected** only when the backend confirms an open port. Set Demo Mode to **Off** in Settings to forbid simulation.
 
 ## API

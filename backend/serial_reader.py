@@ -51,6 +51,10 @@ class SerialReader:
                     time.sleep(2)
                 if self.mode == "connected" and time.time() - self.last_rx > cfg["no_data_timeout_s"]:
                     db.raise_alert("no_data", "warning", f"No data received for over {cfg['no_data_timeout_s']} s.")
+                    if demo == "auto":
+                        self.mode = "demo"
+                if self.ser and self.mode == "demo" and demo == "auto":
+                    self.demo_tick(cfg)
                 if time.time() - t_clean > 3600:
                     t_clean = time.time()
                     cutoff = time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime(time.time() - cfg["retention_days"] * 86400))
@@ -80,8 +84,10 @@ class SerialReader:
             if math.isnan(t) or t <= -127 or not -55 <= t <= 125:
                 db.raise_alert("sensor_disconnected", "critical", f"Invalid DS18B20 value ({t}). Check sensor wiring.")
                 return
+            self.mode = "connected"
             self.record(t, "hardware", cfg)
         elif parts[0] == "ERROR":
+            self.mode = "connected"
             self.last_rx = time.time()
             db.raise_alert("sensor_disconnected", "critical", f"Arduino reported: {line}")
         else:
